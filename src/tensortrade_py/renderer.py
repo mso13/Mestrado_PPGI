@@ -28,7 +28,7 @@ class PositionChangeChart(Renderer):
                     buy[i] = p[i]
                 else:
                     sell[i] = p[i]
-
+        
         buy = pd.Series(buy)
         sell = pd.Series(sell)
 
@@ -40,10 +40,12 @@ class PositionChangeChart(Renderer):
         axs[0].scatter(buy.index, buy.values, marker="v", color="red") # BUY
         axs[0].scatter(sell.index, sell.values, marker="^", color="green") # SELL
         axs[0].set_title("Trading Chart")
-        axs[0].legend(['Buys', 'Sells'])
+        axs[0].legend(['Price', 'Buys', 'Sells'])
 
         performance_df = pd.DataFrame().from_dict(env.action_scheme.portfolio.performance, orient='index')
         performance_df.plot(ax=axs[1])
         axs[1].set_title("Net Worth")
 
-        plt.show()
+        plt.savefig('results.png')
+
+        plt.show();

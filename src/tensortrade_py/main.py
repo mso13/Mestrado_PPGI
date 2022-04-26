@@ -77,15 +77,15 @@ def create_train_env(config):
     ticker = 'PETR4'
 
     # PRICES
-    y = yf.download(f'{ticker}.SA', start='2021-01-01', end='2022-10-31')['Adj Close'].dropna().values
-    price = Stream.source(y, dtype="float").rename("BRL-TTC")
+    y = yf.download(f'{ticker}.SA', start='2021-01-01', end='2021-12-31')['Adj Close'].dropna().values
+    price = Stream.source(y, dtype="float").rename("BRL-TICKER")
 
     bitfinex = Exchange("bitfinex",
                         service=execute_order)(price)
 
     # Portfolio
     cash = Wallet(bitfinex, 100000 * BRL)  # Money
-    asset = Wallet(bitfinex, 0 * TTC)  # Stocks
+    asset = Wallet(bitfinex, 0 * TICKER)  # Stocks
 
     portfolio = Portfolio(BRL, [cash, asset])
 
@@ -131,12 +131,12 @@ def create_train_env(config):
 def create_eval_env(config):
     y = config["y"]
 
-    price = Stream.source(y, dtype="float").rename("BRL-TTC")
+    price = Stream.source(y, dtype="float").rename("BRL-TICKER")
 
     bitfinex = Exchange("bitfinex", service=execute_order)(price)
 
     cash = Wallet(bitfinex, 100000 * BRL)
-    asset = Wallet(bitfinex, 0 * TTC)
+    asset = Wallet(bitfinex, 0 * TICKER)
 
     portfolio = Portfolio(BRL, [cash, asset])
 
@@ -177,7 +177,7 @@ if __name__ == '__main__':
 
     # Instruments in Portfolio
     BRL = Instrument("BRL", 2, "Brazilian Currency")
-    TTC = Instrument("TTC", 2, "TensorTrade Coin")
+    TICKER = Instrument("TICKER", 2, "Ticker")
 
     # Register Env
     register_env("TradingEnv", create_train_env)
@@ -289,9 +289,10 @@ if __name__ == '__main__':
     #####################################################################################################
 
     # Validation Set (New Data)
+
     env, portfolio = create_eval_env({
         "window_size": window_size,
-        "y": yf.download(f'PETR4.SA', start='2021-10-31', end='2022-01-31')['Adj Close'].dropna().values
+        "y": yf.download(f'PETR4.SA', start='2022-01-01', end='2022-04-01')['Adj Close'].dropna().values
     })
 
     # Run until episode ends
