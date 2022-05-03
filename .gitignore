@@ -2,6 +2,7 @@
 models*/
 data/
 charts/
+tutorials/
 
 # Prerequisites
 *.d
