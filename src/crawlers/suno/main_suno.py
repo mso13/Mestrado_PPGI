@@ -3,8 +3,7 @@ import re
 import json
 import time
 import scrapy
-from tqdm import tqdm
-from datetime import datetime
+from datetime import datetime, timedelta
 from scrapy.crawler import CrawlerProcess
 
 
@@ -15,7 +14,7 @@ class SunoSpider(scrapy.Spider):
     def start_requests(self):
 
         # Set number of pages to download on range(1, x)
-        urls = ['https://www.sunoresearch.com.br/noticias/tags/petrobras-petr4/page/%s' % i for i in range (1, 120)]
+        urls = ['https://www.sunoresearch.com.br/noticias/tags/banco-do-brasil-bbas3/page/%s' % i for i in range (1, 120)]
 
         for url in urls:
             time.sleep(3)
@@ -88,10 +87,12 @@ class SunoSpider(scrapy.Spider):
         # Save all the data collected
         results_dict = dict()
 
+        today = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
         results_dict['topic'] = news_topic_ext
         results_dict['title'] = news_title_ext
         results_dict['date'] = news_date_ext
-        #results_dict['full_text'] = news_full_text_ext
+        results_dict['search_date'] = today
         results_dict['url'] = response.url
         results_dict['tags'] = news_tags_ext
 
@@ -100,13 +101,9 @@ class SunoSpider(scrapy.Spider):
 
 if __name__ == '__main__':
 
-    today = datetime.now()
-    today = today.strftime('%Y-%m-%d')
-    today = today.replace('-', '')
-
     THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
-    ticker = 'petr4'
+    ticker = 'bbas3'
     filename = f'suno-{ticker}'
 
     # List to save the data collected
@@ -122,5 +119,5 @@ if __name__ == '__main__':
     process.start()
 
     # Save the list of dicts
-    with open(os.path.join(THIS_DIR + f'/results/{filename}-{today}.json'), 'w', encoding='utf8') as f:
+    with open(os.path.join(THIS_DIR + f'/results/{filename}.json'), 'w', encoding='utf8') as f:
         json.dump(results_list, f, ensure_ascii=False)
