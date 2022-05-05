@@ -1,8 +1,8 @@
 # Directories
 models*/
-data/
 charts/
 tutorials/
+tensortade_py/
 
 # Prerequisites
 *.d
