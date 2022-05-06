@@ -19,7 +19,7 @@ class InfoMoneySpider(scrapy.Spider):
         url_base = 'https://www.infomoney.com.br/?infinity=scrolling'
 
         # Set number of pages to download on range(1, x)
-        for i in range(1, 150):
+        for i in range(150, 500):
 
             params = dict()
             params['action'] = 'infinite_scroll'

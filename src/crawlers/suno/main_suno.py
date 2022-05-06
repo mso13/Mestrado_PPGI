@@ -14,10 +14,10 @@ class SunoSpider(scrapy.Spider):
     def start_requests(self):
 
         # Set number of pages to download on range(1, x)
-        urls = ['https://www.sunoresearch.com.br/noticias/tags/itau-unibanco-itub3-itub4/page/%s' % i for i in range (1, 150)]
+        urls = ['https://www.sunoresearch.com.br/noticias/tags/equatorial-eqtl3/page/%s' % i for i in range (1, 500)]
 
         for url in urls:
-            time.sleep(3)
+            time.sleep(5)
             yield scrapy.Request( 
                 url=url, 
                 callback=self.parse_front 
@@ -103,7 +103,7 @@ if __name__ == '__main__':
 
     THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
-    ticker = 'itub4'
+    ticker = 'eqtl3'
     filename = f'suno-{ticker}'
 
     # List to save the data collected
