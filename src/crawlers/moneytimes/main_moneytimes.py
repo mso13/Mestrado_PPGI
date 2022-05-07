@@ -14,7 +14,7 @@ class MoneyTimesSpider(scrapy.Spider):
     def start_requests(self):
 
         # Set number of pages to download on range(1, x)
-        urls = ['https://www.moneytimes.com.br/tag/vale/page/%s' % i for i in range(1, 150)]
+        urls = ['https://www.moneytimes.com.br/tag/itau-unibanco/page/%s' % i for i in range(1, 1500)]
 
         for url in urls:
             time.sleep(3)
@@ -101,7 +101,7 @@ class MoneyTimesSpider(scrapy.Spider):
 
 if __name__ == '__main__':
 
-    ticker = 'vale3'
+    ticker = 'itub4'
 
     filename = 'moneytimes'
 
