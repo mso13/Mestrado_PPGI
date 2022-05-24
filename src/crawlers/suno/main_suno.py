@@ -14,7 +14,7 @@ class SunoSpider(scrapy.Spider):
     def start_requests(self):
 
         # Set number of pages to download on range(1, x)
-        urls = ['https://www.sunoresearch.com.br/noticias/tags/equatorial-eqtl3/page/%s' % i for i in range (1, 500)]
+        urls = ['https://www.sunoresearch.com.br/noticias/tags/b3-b3sa3/page/%s' % i for i in range (1, 2000)]
 
         for url in urls:
             time.sleep(5)
@@ -103,7 +103,7 @@ if __name__ == '__main__':
 
     THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
-    ticker = 'eqtl3'
+    ticker = 'b3sa3'
     filename = f'suno-{ticker}'
 
     # List to save the data collected

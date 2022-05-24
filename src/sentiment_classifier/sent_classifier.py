@@ -68,8 +68,9 @@ class SnorkelSentimentClassifier:
     ABSTAIN = -1
     categories = [POSITIVE, NEGATIVE, ABSTAIN]
 
-    def __init__(self, df) -> None:
+    def __init__(self, df, source='twitter') -> None:
         self.df = df
+        self.source = source
     
     # Labelling Functions (LFs)
 
@@ -165,54 +166,60 @@ class SnorkelSentimentClassifier:
     
     def simple_preprocessor(self, df_input) -> pd.DataFrame:
         
+        df = pd.DataFrame()
+
         df = df_input.copy()
 
-        df.rename(columns={'title': 'title_raw'}, inplace=True)
+        if self.source == 'twitter':
+            df.rename(columns={'text': 'title'}, inplace=True)
+
+        # Duplicate column to save original data
+        df['title_raw'] = df['title']
 
         # Substituir símbolos importantes
-        df['title'] = df['title_raw'].map(lambda s: s.replace('-feira', ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('-alvo', ' alvo'))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('\n', ' '))  
-        df['title'] = df['title_raw'].map(lambda s: s.replace('+', ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('º', ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace("‘", ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace("’", ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace("•", ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('-', ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('%', ' por cento'))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('R$', ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('U$', ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('US$', ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('S&P 500', 'spx'))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('/', '@'))
+        df['title'] = df['title'].map(lambda s: s.replace('-feira', ''))
+        df['title'] = df['title'].map(lambda s: s.replace('-alvo', ' alvo'))
+        df['title'] = df['title'].map(lambda s: s.replace('\n', ' '))  
+        df['title'] = df['title'].map(lambda s: s.replace('+', ''))
+        df['title'] = df['title'].map(lambda s: s.replace('º', ''))
+        df['title'] = df['title'].map(lambda s: s.replace("‘", ''))
+        df['title'] = df['title'].map(lambda s: s.replace("’", ''))
+        df['title'] = df['title'].map(lambda s: s.replace("•", ''))
+        df['title'] = df['title'].map(lambda s: s.replace('-', ''))
+        df['title'] = df['title'].map(lambda s: s.replace('%', ' por cento'))
+        df['title'] = df['title'].map(lambda s: s.replace('R$', ''))
+        df['title'] = df['title'].map(lambda s: s.replace('U$', ''))
+        df['title'] = df['title'].map(lambda s: s.replace('US$', ''))
+        df['title'] = df['title'].map(lambda s: s.replace('S&P 500', 'spx'))
+        df['title'] = df['title'].map(lambda s: s.replace('/', '@'))
 
         # Remove Links, Hashtags e Menções
-        df['title'] = df['title_raw'].map(lambda s: remove_links(s))
-        df['title'] = df['title_raw'].str.replace('(\#\w+.*?)',"")
-        df['title'] = df['title_raw'].str.replace('(\@\w+.*?)',"")
+        df['title'] = df['title'].map(lambda s: remove_links(s))
+        df['title'] = df['title'].str.replace('(\#\w+.*?)',"")
+        df['title'] = df['title'].str.replace('(\@\w+.*?)',"")
 
         # Transformar em String e Letras Minúsculas nas Mensagens
-        df['title'] = df['title_raw'].map(lambda s: str(s).lower())
+        df['title'] = df['title'].map(lambda s: str(s).lower())
 
         # Remover Pontuações
-        df['title'] = df['title_raw'].map(lambda s: s.translate(str.maketrans('', '', string.punctuation)))
+        df['title'] = df['title'].map(lambda s: s.translate(str.maketrans('', '', string.punctuation)))
 
         # Remover Emojis     
-        df['title'] = df['title_raw'].map(lambda s: remove_emojis(s))
+        df['title'] = df['title'].map(lambda s: remove_emojis(s))
 
         # Quebras de Linha desnecessárias
-        df['title'] = df['title_raw'].map(lambda s: s.replace('\n', ' '))
+        df['title'] = df['title'].map(lambda s: s.replace('\n', ' '))
 
         # Remover aspas duplas
-        df['title'] = df['title_raw'].map(lambda s: s.replace('\"', ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('“', ''))
-        df['title'] = df['title_raw'].map(lambda s: s.replace('”', ''))
+        df['title'] = df['title'].map(lambda s: s.replace('\"', ''))
+        df['title'] = df['title'].map(lambda s: s.replace('“', ''))
+        df['title'] = df['title'].map(lambda s: s.replace('”', ''))
 
         # Remover valores
-        df['title'] = df['title_raw'].map(lambda s: remove_valores(s))
+        df['title'] = df['title'].map(lambda s: remove_valores(s))
 
         # Espaços desnecessários
-        df['title'] = df['title_raw'].map(lambda s: s.strip())
+        df['title'] = df['title'].map(lambda s: s.strip())
 
         self.df = df.copy()
 
@@ -221,18 +228,20 @@ class SnorkelSentimentClassifier:
     def apply_rules(self, df):
         """TODO"""
 
-        # Import Raw Data
+        # 1. Import Raw Data
         df = self.df.copy()
 
-        # Preprocess Data
+        # 2. Preprocess Data
         df = self.simple_preprocessor(df)
 
         lfs = [
+            # Positive Rules
             self.lf_news_good_adjs,
             self.lf_happiness_words,
             self.lf_news_good_verbs,
             self.lf_regex_dividendos,
             self.lf_regex_resultado_positivo,
+            # Negative Rules
             self.lf_news_bad_adjs,
             self.lf_sadness_words,
             self.lf_news_bad_verbs,
@@ -252,7 +261,7 @@ class SnorkelSentimentClassifier:
 
         # fit on the data
         label_model.fit(L_train,
-                        n_epochs=500,
+                        n_epochs=1500,
                         log_freq=100, 
                         seed=123)
 
@@ -264,8 +273,14 @@ class SnorkelSentimentClassifier:
         dict_map = {'-1': 'NEUTRAL', '1': 'POSITIVE', '0': 'NEGATIVE'}
         df['label_class'] = df['label'].map(dict_map)
 
-        columns_to_keep = ['title_raw', 'search_date', 'label_class']
-
+        if self.source == 'twitter':
+            columns_to_keep = ['title', 'title_raw', 'created_at', 'search_dt', 'rt_count', 'favorite_count', 'label_class']
+        else:
+            columns_to_keep = ['title', 'title_raw', 'search_date', 'label_class']
+        
         df = df[columns_to_keep]
 
-        return df
+        # Results
+        results = LFAnalysis(L=L_train, lfs=lfs).lf_summary()
+
+        return df, results
