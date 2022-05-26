@@ -237,13 +237,13 @@ class SnorkelSentimentClassifier:
         lfs = [
             # Positive Rules
             self.lf_news_good_adjs,
-            self.lf_happiness_words,
+            # self.lf_happiness_words,
             self.lf_news_good_verbs,
             self.lf_regex_dividendos,
             self.lf_regex_resultado_positivo,
             # Negative Rules
             self.lf_news_bad_adjs,
-            self.lf_sadness_words,
+            # self.lf_sadness_words,
             self.lf_news_bad_verbs,
             self.lf_regex_resultado_negativo
         ]
