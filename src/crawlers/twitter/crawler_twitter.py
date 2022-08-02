@@ -92,7 +92,7 @@ def get_json_object(tweet) -> dict:
     
 def save_tweets_history(results_list: list, user_name: str) -> None:
     # Save the list of dicts
-    with open(f'./results/{user_name}.json', 'w', encoding='utf8') as f:
+    with open(f'./results_related/{user_name}.json', 'w', encoding='utf8') as f:
         json.dump(results_list, f, ensure_ascii=False)
 
 
@@ -125,8 +125,6 @@ if __name__ == '__main__':
 
     # Get username from argument list
     search_user = sys.argv[1] # Skips first, since it is the filename 'crawler_twitter.py'
-
-    print (sys.argv)
 
     screen_name, user_id = None, None
 
