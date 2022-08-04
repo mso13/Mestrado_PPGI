@@ -164,7 +164,8 @@ class SnorkelSentimentClassifier:
         fall_pattern = r"fech.*queda.*|.*abr.*queda.*|.*fech.*neg.*|.*abr.*neg.*|.*prev.*baixa.*|.*prev.*queda.*|.*em.*queda.*|.*result.*negativo.*" 
         return NEGATIVE if re.search(fall_pattern, x.title.lower(), flags=re.I) else ABSTAIN    
     
-    def simple_preprocessor(self, df_input) -> pd.DataFrame:
+
+    def simple_preprocessor(self, df_input: pd.DataFrame) -> pd.DataFrame:
         
         df = pd.DataFrame()
 
@@ -225,8 +226,10 @@ class SnorkelSentimentClassifier:
 
         return df
 
-    def apply_rules(self, df):
-        """TODO"""
+    def apply_rules(self, df: pd.DataFrame):
+        """
+        Apply the selected LFs to textual data. Use full dataset, since there is no labelled data to compare.
+        """
 
         # 1. Import Raw Data
         df = self.df.copy()
@@ -261,7 +264,7 @@ class SnorkelSentimentClassifier:
 
         # fit on the data
         label_model.fit(L_train,
-                        n_epochs=1500,
+                        n_epochs=5000,
                         log_freq=100, 
                         seed=123)
 

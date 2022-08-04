@@ -8,13 +8,21 @@ from scrapy.crawler import CrawlerProcess
 
 
 class SunoSpider(scrapy.Spider):
+    """
+    Search for:
+    [1]. B3SA3 -> b3-b3sa3
+    [2]. EQTL3 -> equatorial-eqtl3
+    [3]. ITUB4 -> itau-unibanco-itub3-itub4
+    [4]. PETR4 -> petrobras-petr4
+    [5]. VALE3 -> vale-vale3
+    """
 
     name = "suno_spider"
 
     def start_requests(self):
 
         # Set number of pages to download on range(1, x)
-        urls = ['https://www.sunoresearch.com.br/noticias/tags/b3-b3sa3/page/%s' % i for i in range (1, 2000)]
+        urls = ['https://www.sunoresearch.com.br/noticias/tags/itau-unibanco-itub3-itub4/page/%s' % i for i in range (1, 25)]
 
         for url in urls:
             time.sleep(5)
@@ -103,7 +111,7 @@ if __name__ == '__main__':
 
     THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
-    ticker = 'b3sa3'
+    ticker = 'itub4'
     filename = f'suno-{ticker}'
 
     # List to save the data collected
