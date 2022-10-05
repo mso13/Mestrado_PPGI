@@ -1,11 +1,12 @@
-# Mestrado PPGI (UnB) - Aplicação do Aprendizado por Reforço Profundo na Negociação por Algoritmos no Mercado Financeiro Brasileiro
+# Mestrado Acadêmico (PPGI/UnB)
+
+## A Deep Reinforcement Learning based Trading Agent for the Brazilian Stock Market
 
 Repositório destinado ao armazenamento dos códigos implementados durante o mestrado realizado no PPGI (UnB). 
-Iniciado em 20/04/2022.
 
 ---
 
-## Resumo da Proposta
+### Resumo da Proposta
 
 O uso de algoritmos para a negociação de ativos nas bolsas de valores ganhou destaque com o avanço da capacidade computacional nos últimos anos. A grande quantidade de dados financeiros disponíveis incentivou a criação de diferentes estratégias quantitativas de investimento. Dentre as propostas no domínio da inteligência artificial, o uso do Aprendizado por Reforço Profundo (DRL), que um dos paradigmas de aprendizado aplicado a problemas que envolvem sequências de decisões em cenários complexos ganhou destaque, sendo este utilizado para a criação de agentes inteligentes e para a simulação dos ambientes de negociação. Dando importância ao exposto, o presente trabalho propõe o AARON: um serviço de negociação individualizada de ativos que utiliza um agente de DRL e combina múltiplas modalidades de dados do mercado financeiro para a tomada informada de decisão. Para tanto, o AARON combina os dados históricos de cotações, indicadores técnicos, dados acerca da polaridade de sentimentos extraídos de textos provenientes de portais de notícias e do Twitter e dados macroeconômicos. A proposta foi avaliada em diferentes etapas, a partir de combinações entre a quantidade de dados utilizados e o esquema de recompensa adotado pelo agente de DRL do AARON. Os resultados mostraram que a estratégia desenvolvida superou o patrimônio líquido inicial investido em 91\% dos casos para as ações da PETR4, sendo esta a melhor média entre os cenários de avaliação explorados. Além disso, todos os cenários consideram a simulação de taxas de transação cobradas pelas instituições financeiras.
 
