@@ -4,6 +4,7 @@ charts/
 tutorials/
 tensortade_py/
 resources/
+resources*/
 
 # Prerequisites
 *.d
