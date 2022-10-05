@@ -3,6 +3,7 @@ models*/
 charts/
 tutorials/
 tensortade_py/
+resources/
 
 # Prerequisites
 *.d
