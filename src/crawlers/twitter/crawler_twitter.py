@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 import tweepy
@@ -114,11 +115,19 @@ def get_user_timeline(screen_name, user_id):
 
 if __name__ == '__main__':
     # Keys and Access Tokens
-    consumer_key = 'ZsdCp41WfGyjRhqGrXLijllaL'
-    consumer_secret = 'aQTeoGnNxctaLqj5gw5AqJ8liqFtAWedyqoZL6naQobOtYQGo0'
+    fpath_credentials: str = os.path.join(
+        '../../../', 'resources', 'twitter_credentials.json'
+    )
 
-    access_token = '848211984399179776-F0IxgJAanurK4e8lYzBjNhpzY8aENDw'
-    access_token_secret = 'SvJP296wgdOcNlHJGckCgRNtXEotPvYORP05TJOPomb0t'
+    with open(fpath_credentials, 'r') as file:
+        credentials = json.load(file)
+        
+    # Keys and Access Tokens
+    consumer_key = credentials['api_key']
+    consumer_secret = credentials['api_key_secret']
+
+    access_token = credentials['access_token']
+    access_token_secret = credentials['access_token_secret']
 
     # The API class provides access to the entire twitter RESTful API methods.
     api = get_twitter_api_access(consumer_key, consumer_secret, access_token, access_token_secret)
